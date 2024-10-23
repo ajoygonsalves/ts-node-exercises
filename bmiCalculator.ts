@@ -10,8 +10,23 @@ const calculateBmi = (height: number, weight: number): string => {
     case bmi <= 29.9:
       return "Overweight";
     default:
-      return "Invalid BMI";
+      return "Obese";
   }
 };
 
-console.log(calculateBmi(180, 74));
+try {
+  const height = Number(process.argv[2]);
+  const weight = Number(process.argv[3]);
+
+  if (isNaN(height) || isNaN(weight)) {
+    throw new Error("Provided values were not numbers!");
+  }
+
+  console.log(calculateBmi(height, weight));
+} catch (error: unknown) {
+  let errorMessage = "Something bad happened.";
+  if (error instanceof Error) {
+    errorMessage += " Error: " + error.message;
+  }
+  console.log(errorMessage);
+}

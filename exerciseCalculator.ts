@@ -16,16 +16,23 @@ const calculateExercises = (
   const trainingDays: number = exerciseHours.filter(
     (day) => Number(day) !== 0
   ).length;
-  const success: boolean = periodLength === trainingDays;
-  const rating: number = Math.round((trainingDays / periodLength) * 3 * 2) / 2;
-  const ratingDescription: string =
-    rating === 1
-      ? "You did not meet your target"
-      : rating === 2
-      ? "not too bad but could be better"
-      : "You met your target";
+  const success: boolean = exerciseHours.every((hours) => hours >= target);
   const average: number =
     exerciseHours.reduce((acc, cur) => acc + cur) / periodLength;
+
+  let rating: number;
+  let ratingDescription: string;
+
+  if (average >= target) {
+    rating = 3;
+    ratingDescription = "Excellent! You met your target";
+  } else if (average >= target * 0.8) {
+    rating = 2;
+    ratingDescription = "Not too bad but could be better";
+  } else {
+    rating = 1;
+    ratingDescription = "You need to put in more effort";
+  }
 
   return {
     periodLength,
@@ -38,4 +45,22 @@ const calculateExercises = (
   };
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+try {
+  const args = process.argv.slice(2).map(Number);
+  const target = args[0];
+  const exerciseHours = args.slice(1);
+
+  if (args.some(isNaN) || args.length < 2) {
+    throw new Error(
+      "Provided values were not numbers or not enough arguments!"
+    );
+  }
+
+  console.log(calculateExercises(exerciseHours, target));
+} catch (error: unknown) {
+  let errorMessage = "Something bad happened.";
+  if (error instanceof Error) {
+    errorMessage += " Error: " + error.message;
+  }
+  console.log(errorMessage);
+}
