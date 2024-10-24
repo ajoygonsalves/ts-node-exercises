@@ -1,7 +1,7 @@
 // Write a BMI Calculator function that takes height and weight as arguments and returns the BMI value.
 
 export const calculateBmi = (height: number, weight: number): string => {
-  let bmi = (weight / height ** 2) * 10000;
+  const bmi = (weight / height ** 2) * 10000;
   switch (true) {
     case bmi < 18.5:
       return "Underweight";
