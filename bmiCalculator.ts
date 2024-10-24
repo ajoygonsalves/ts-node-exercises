@@ -1,6 +1,6 @@
 // Write a BMI Calculator function that takes height and weight as arguments and returns the BMI value.
 
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
   let bmi = (weight / height ** 2) * 10000;
   switch (true) {
     case bmi < 18.5:
@@ -14,19 +14,21 @@ const calculateBmi = (height: number, weight: number): string => {
   }
 };
 
-try {
-  const height = Number(process.argv[2]);
-  const weight = Number(process.argv[3]);
+if (require.main === module) {
+  try {
+    const height = Number(process.argv[2]);
+    const weight = Number(process.argv[3]);
 
-  if (isNaN(height) || isNaN(weight)) {
-    throw new Error("Provided values were not numbers!");
-  }
+    if (isNaN(height) || isNaN(weight)) {
+      throw new Error("Provided values were not numbers!");
+    }
 
-  console.log(calculateBmi(height, weight));
-} catch (error: unknown) {
-  let errorMessage = "Something bad happened.";
-  if (error instanceof Error) {
-    errorMessage += " Error: " + error.message;
+    console.log(calculateBmi(height, weight));
+  } catch (error: unknown) {
+    let errorMessage = "Something bad happened.";
+    if (error instanceof Error) {
+      errorMessage += " Error: " + error.message;
+    }
+    console.log(errorMessage);
   }
-  console.log(errorMessage);
 }
