@@ -1,4 +1,4 @@
-interface ExerciseOutput {
+export interface ExerciseOutput {
   periodLength: number;
   trainingDays: number;
   success: boolean;
@@ -8,7 +8,7 @@ interface ExerciseOutput {
   average: number;
 }
 
-const calculateExercises = (
+export const calculateExercises = (
   exerciseHours: Array<number>,
   target: number
 ): ExerciseOutput => {
@@ -45,22 +45,24 @@ const calculateExercises = (
   };
 };
 
-try {
-  const args = process.argv.slice(2).map(Number);
-  const target = args[0];
-  const exerciseHours = args.slice(1);
+if (require.main === module) {
+  try {
+    const args = process.argv.slice(2).map(Number);
+    const target = args[0];
+    const exerciseHours = args.slice(1);
 
-  if (args.some(isNaN) || args.length < 2) {
-    throw new Error(
-      "Provided values were not numbers or not enough arguments!"
-    );
-  }
+    if (args.some(isNaN) || args.length < 2) {
+      throw new Error(
+        "Provided values were not numbers or not enough arguments!"
+      );
+    }
 
-  console.log(calculateExercises(exerciseHours, target));
-} catch (error: unknown) {
-  let errorMessage = "Something bad happened.";
-  if (error instanceof Error) {
-    errorMessage += " Error: " + error.message;
+    console.log(calculateExercises(exerciseHours, target));
+  } catch (error: unknown) {
+    let errorMessage = "Something bad happened.";
+    if (error instanceof Error) {
+      errorMessage += " Error: " + error.message;
+    }
+    console.log(errorMessage);
   }
-  console.log(errorMessage);
 }
